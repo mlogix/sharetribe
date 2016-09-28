@@ -16,7 +16,7 @@ class ProcessImagesForListingCards < ActiveRecord::Migration
     ").each_slice(1000) { |ids|
 
       exec_insert("INSERT INTO delayed_jobs
-                  (priority, handler, last_error, run_at, created_at, updated_at, queue)
+                  (priority, handler, last_error, run_at, created_at, updated_at)
                   VALUES #{values(ids)}", "create_delayed_jobs", [])
     }
   end
@@ -27,7 +27,7 @@ class ProcessImagesForListingCards < ActiveRecord::Migration
 
   def values(ids)
     ids.map { |id|
-      "(1, '#{handler(id)}', NULL, NOW(), NOW(), NOW(), 'image_reprocess')"
+      "(11, '#{handler(id)}', NULL, NOW(), NOW(), NOW())"
     }.join(",")
   end
 
